@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <title>Desktop Notification</title>
+</head>
+
+<body>
+    <button id='permission'>Request Permission</button>
+    <button id='trigger'>Trigger</button>
+    <script>
+        let permission = document.querySelector('#permission');
+        let trigger = document.querySelector('#trigger');
+
+        permission.addEventListener('click', function (e) {
+            if (!window.Notification)
+                console.log('dont support browser');
+            else
+                Notification.requestPermission(function (permission) {
+                    /* permission ==  'default', 'denied', 'granted' */
+                    console.log(permission);
+                });
+        });
+
+
+        // simulate event 
+        trigger.addEventListener('click', function (e) {
+            var notify = {
+                message: 'this message from mohsen',
+                body: 'you must start writing code',
+                icon: '',
+                tagged: 'mohsen'
+            }
+
+            if (Notification.permission === 'default') {
+                Notification.requestPermission(function (permission) {
+                    /* permission ==  'default', 'denied', 'granted' */
+                    if (permission === 'granted') {
+                        let notification = new Notification(notify.message, {
+                            body: notify.body,
+                            // icon: notify.icon,
+                            tag: notify.tagged
+                        });
+
+                        notification.onclick = function () {
+                            console.log(this);
+                        }
+                    }
+                });
+            } else {
+                let notification = new Notification(notify.message, {
+                    body: notify.body,
+                    // icon: notify.icon,
+                    tag: notify.tagged
+                });
+
+                notification.onclick = function () {
+                    console.log(this);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
